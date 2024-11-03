@@ -1,0 +1,28 @@
+﻿@model IEnumerable<Inventarni_system.Models.Sklad>
+
+<h2>Sklady</h2>
+
+<a class="btn btn-primary" asp-action="Create">Přidat nový sklad</a>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Název</th>
+            <th>Budova</th>
+            <th>Akce</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var sklad in Model)
+        {
+            <tr>
+                <td>@sklad.Nazev</td>
+                <td>@sklad.Budova.Nazev</td>
+                <td>
+                    <a class="btn btn-warning" asp-action="Edit" asp-route-id="@sklad.Id">Upravit</a> |
+                    <a class="btn btn-danger" asp-action="Delete" asp-route-id="@sklad.Id">Smazat</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

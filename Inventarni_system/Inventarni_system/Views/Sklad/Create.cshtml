@@ -1,0 +1,15 @@
+﻿@model Inventarni_system.Models.Sklad
+
+<h2>Přidat nový sklad</h2>
+
+<form asp-action="Create">
+    <div>
+        <label>Název:</label>
+        <input asp-for="Nazev" required />
+    </div>
+    <div>
+        <label>Budova:</label>
+        <select asp-for="BudovaId" asp-items="@(new SelectList(ViewBag.Budovy, "Id", "Nazev"))" required></select>
+    </div>
+    <button type="submit">Přidat</button>
+</form>

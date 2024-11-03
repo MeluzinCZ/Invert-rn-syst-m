@@ -1,0 +1,16 @@
+﻿@model Inventarni_system.Models.Sklad
+
+<h2>Upravit sklad</h2>
+
+<form asp-action="Edit">
+    <input type="hidden" asp-for="Id" />
+    <div>
+        <label>Název:</label>
+        <input asp-for="Nazev" required />
+    </div>
+    <div>
+        <label>Budova:</label>
+        <select asp-for="BudovaId" asp-items="@(new SelectList(ViewBag.Budovy, "Id", "Nazev", Model.BudovaId))" required></select>
+    </div>
+    <button type="submit">Uložit změny</button>
+</form>

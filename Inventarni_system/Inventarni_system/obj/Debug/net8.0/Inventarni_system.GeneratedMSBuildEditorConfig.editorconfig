@@ -18,6 +18,22 @@ build_property.GenerateRazorMetadataSourceChecksumAttributes =
 build_property.MSBuildProjectDirectory = C:\Users\beda3\Desktop\SKOLA\VEJSKA FEI\TRETAK\BCSH2\Semestralni_prace\Inventarni_system\Inventarni_system
 build_property._RazorSourceGeneratorDebug = 
 
+[C:/Users/beda3/Desktop/SKOLA/VEJSKA FEI/TRETAK/BCSH2/Semestralni_prace/Inventarni_system/Inventarni_system/Views/Budova/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQnVkb3ZhXENyZWF0ZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/beda3/Desktop/SKOLA/VEJSKA FEI/TRETAK/BCSH2/Semestralni_prace/Inventarni_system/Inventarni_system/Views/Budova/Delete.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQnVkb3ZhXERlbGV0ZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/beda3/Desktop/SKOLA/VEJSKA FEI/TRETAK/BCSH2/Semestralni_prace/Inventarni_system/Inventarni_system/Views/Budova/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQnVkb3ZhXEVkaXQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/beda3/Desktop/SKOLA/VEJSKA FEI/TRETAK/BCSH2/Semestralni_prace/Inventarni_system/Inventarni_system/Views/Budova/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQnVkb3ZhXEluZGV4LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Users/beda3/Desktop/SKOLA/VEJSKA FEI/TRETAK/BCSH2/Semestralni_prace/Inventarni_system/Inventarni_system/Views/Home/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
@@ -26,12 +42,48 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxQcml2YWN5LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/Users/beda3/Desktop/SKOLA/VEJSKA FEI/TRETAK/BCSH2/Semestralni_prace/Inventarni_system/Inventarni_system/Views/Predmet/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJlZG1ldFxDcmVhdGUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/beda3/Desktop/SKOLA/VEJSKA FEI/TRETAK/BCSH2/Semestralni_prace/Inventarni_system/Inventarni_system/Views/Predmet/Delete.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJlZG1ldFxEZWxldGUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/beda3/Desktop/SKOLA/VEJSKA FEI/TRETAK/BCSH2/Semestralni_prace/Inventarni_system/Inventarni_system/Views/Predmet/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJlZG1ldFxFZGl0LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/beda3/Desktop/SKOLA/VEJSKA FEI/TRETAK/BCSH2/Semestralni_prace/Inventarni_system/Inventarni_system/Views/Predmet/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJlZG1ldFxJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Users/beda3/Desktop/SKOLA/VEJSKA FEI/TRETAK/BCSH2/Semestralni_prace/Inventarni_system/Inventarni_system/Views/Shared/Error.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXEVycm9yLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/beda3/Desktop/SKOLA/VEJSKA FEI/TRETAK/BCSH2/Semestralni_prace/Inventarni_system/Inventarni_system/Views/Shared/_ValidationScriptsPartial.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/beda3/Desktop/SKOLA/VEJSKA FEI/TRETAK/BCSH2/Semestralni_prace/Inventarni_system/Inventarni_system/Views/Shared/_ViewImports.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9WaWV3SW1wb3J0cy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/beda3/Desktop/SKOLA/VEJSKA FEI/TRETAK/BCSH2/Semestralni_prace/Inventarni_system/Inventarni_system/Views/Sklad/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2tsYWRcQ3JlYXRlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/beda3/Desktop/SKOLA/VEJSKA FEI/TRETAK/BCSH2/Semestralni_prace/Inventarni_system/Inventarni_system/Views/Sklad/Delete.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2tsYWRcRGVsZXRlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/beda3/Desktop/SKOLA/VEJSKA FEI/TRETAK/BCSH2/Semestralni_prace/Inventarni_system/Inventarni_system/Views/Sklad/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2tsYWRcRWRpdC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/beda3/Desktop/SKOLA/VEJSKA FEI/TRETAK/BCSH2/Semestralni_prace/Inventarni_system/Inventarni_system/Views/Sklad/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2tsYWRcSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/beda3/Desktop/SKOLA/VEJSKA FEI/TRETAK/BCSH2/Semestralni_prace/Inventarni_system/Inventarni_system/Views/_ViewImports.cshtml]

@@ -1,0 +1,28 @@
+﻿@model IEnumerable<Inventarni_system.Models.Budova>
+
+<h2>Budovy</h2>
+
+<a class="btn btn-primary" href="/Budova/Create">Přidat novou budovu</a>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Název</th>
+            <th>Typ</th>
+            <th>Akce</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var budova in Model)
+        {
+            <tr>
+                <td>@budova.Nazev</td>
+                <td>@budova.Typ</td>
+                <td>
+                    <a class="btn btn-warning" asp-action="Edit" asp-route-id="@budova.Id">Upravit</a> |
+                    <a class="btn btn-danger" asp-action="Delete" asp-route-id="@budova.Id">Smazat</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

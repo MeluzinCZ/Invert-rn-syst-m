@@ -1,0 +1,32 @@
+﻿@model IEnumerable<Inventarni_system.Models.Predmet>
+
+<h2>Předměty</h2>
+
+<a class="btn btn-primary" asp-action="Create">Přidat nový předmět</a>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Název</th>
+            <th>Sklad</th>
+            <th>Množství</th>
+            <th>Cena za kus</th>
+            <th>Akce</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var predmet in Model)
+        {
+            <tr>
+                <td>@predmet.Nazev</td>
+                <td>@predmet.Sklad.Nazev</td>
+                <td>@predmet.Mnozstvi</td>
+                <td>@predmet.CenaZaKus</td>
+                <td>
+                    <a class="btn btn-warning" asp-action="Edit" asp-route-id="@predmet.Id">Upravit</a> |
+                    <a class="btn btn-danger" asp-action="Delete" asp-route-id="@predmet.Id">Smazat</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

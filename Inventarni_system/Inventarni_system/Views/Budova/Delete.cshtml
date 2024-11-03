@@ -1,0 +1,12 @@
+﻿@model Inventarni_system.Models.Budova
+
+<h2>Potvrzení smazání</h2>
+
+<div>
+    <h3>Opravdu chcete smazat budovu @Model.Nazev?</h3>
+    <form asp-action="DeleteConfirmed">
+        <input type="hidden" asp-for="Id" />
+        <button type="submit" class="btn btn-danger">Smazat</button>
+        <a asp-action="Index" class="btn btn-secondary">Zrušit</a>
+    </form>
+</div>

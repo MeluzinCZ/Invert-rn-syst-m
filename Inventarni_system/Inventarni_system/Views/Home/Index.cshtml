@@ -1,8 +1,10 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Domovská stránka";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+<h1>Vítejte v inventárním systému autoservisu!</h1>
+<p>Toto je úvodní stránka aplikace.</p>
+
+<a class="btn btn-primary" asp-controller="Budova" asp-action="Create">Přidat novou budovu</a>
+<a class="btn btn-primary" asp-controller="Sklad" asp-action="Create">Přidat nový sklad</a>
+<a class="btn btn-primary" asp-controller="Predmet" asp-action="Create">Přidat nový předmět</a>

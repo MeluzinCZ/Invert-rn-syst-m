@@ -1,0 +1,16 @@
+﻿@model Inventarni_system.Models.Budova
+
+<h2>Upravit budovu</h2>
+
+<form asp-action="Edit">
+    <input type="hidden" asp-for="Id" />
+    <div>
+        <label>Název:</label>
+        <input asp-for="Nazev" required />
+    </div>
+    <div>
+        <label>Typ:</label>
+        <input asp-for="Typ" required />
+    </div>
+    <button type="submit">Uložit změny</button>
+</form>

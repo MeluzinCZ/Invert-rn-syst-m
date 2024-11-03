@@ -1,0 +1,24 @@
+﻿@model Inventarni_system.Models.Predmet
+
+<h2>Upravit předmět</h2>
+
+<form asp-action="Edit">
+    <input type="hidden" asp-for="Id" />
+    <div>
+        <label>Název:</label>
+        <input asp-for="Nazev" required />
+    </div>
+    <div>
+        <label>Sklad:</label>
+        <select asp-for="SkladId" asp-items="@(new SelectList(ViewBag.Sklady, "Id", "Nazev", Model.SkladId))" required></select>
+    </div>
+    <div>
+        <label>Množství:</label>
+        <input asp-for="Mnozstvi" type="number" required />
+    </div>
+    <div>
+        <label>Cena za kus:</label>
+        <input asp-for="CenaZaKus" type="number" step="0.01" required />
+    </div>
+    <button type="submit">Uložit změny</button>
+</form>
