@@ -2,14 +2,51 @@
 
 <h2>Přidat nový sklad</h2>
 
-<form asp-action="Create">
+<form id="addSkladForm">
+    @Html.AntiForgeryToken()
+
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
     <div>
-        <label>Název:</label>
-        <input asp-for="Nazev" required />
+        <label asp-for="Nazev">Název:</label>
+        <input id="Nazev" name="Nazev" required />
+        @Html.ValidationMessageFor(m => m.Nazev, "", new { @class = "text-danger" })
     </div>
     <div>
-        <label>Budova:</label>
-        <select asp-for="BudovaId" asp-items="@(new SelectList(ViewBag.Budovy, "Id", "Nazev"))" required></select>
+        <label asp-for="BudovaId">Budova:</label>
+        <select id="BudovaId" name="BudovaId" required asp-items="ViewBag.BudovaId"></select>
+        @Html.ValidationMessageFor(m => m.BudovaId, "", new { @class = "text-danger" })
     </div>
-    <button type="submit">Přidat</button>
+    <button type="button" onclick="submitForm()">Přidat</button>
 </form>
+
+<script>
+    function submitForm() {
+        var nazev = document.getElementById("Nazev").value;
+        var budovaId = document.getElementById("BudovaId").value;
+
+        fetch('/Sklad/Create', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'X-Requested-With': 'XMLHttpRequest'
+            },
+            body: new URLSearchParams({
+                '__RequestVerificationToken': document.querySelector('input[name="__RequestVerificationToken"]').value,
+                'Nazev': nazev,
+                'BudovaId': budovaId
+            })
+        })
+            .then(response => {
+                if (response.ok) {
+                    window.location.href = '/Sklad';
+                } else {
+                    alert('Došlo k chybě při odesílání formuláře.');
+                }
+            })
+            .catch(error => {
+                console.error('Chyba:', error);
+                alert('Nastala chyba při odesílání formuláře.');
+            });
+    }
+</script>

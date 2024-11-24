@@ -1,26 +1,37 @@
 ﻿@model IEnumerable<Inventarni_system.Models.Sklad>
 
+@{
+    ViewData["Title"] = "Sklady";
+}
+
 <h2>Sklady</h2>
 
-<a class="btn btn-primary" asp-action="Create">Přidat nový sklad</a>
+<div class="mb-3">
+    <a asp-action="Create" class="btn btn-success">Přidat nový sklad</a>
+</div>
+
+<form method="get" asp-controller="Sklad" asp-action="Index">
+    <div class="form-group">
+        <input type="text" name="searchString" value="@ViewData["CurrentFilter"]" class="form-control" placeholder="Hledat sklad...">
+        <button type="submit" class="btn btn-primary mt-2">Vyhledat</button>
+    </div>
+</form>
 
 <table class="table">
     <thead>
         <tr>
             <th>Název</th>
-            <th>Budova</th>
             <th>Akce</th>
         </tr>
     </thead>
     <tbody>
-        @foreach (var sklad in Model)
+        @foreach (var item in Model)
         {
             <tr>
-                <td>@sklad.Nazev</td>
-                <td>@sklad.Budova.Nazev</td>
+                <td>@item.Nazev</td>
                 <td>
-                    <a class="btn btn-warning" asp-action="Edit" asp-route-id="@sklad.Id">Upravit</a> |
-                    <a class="btn btn-danger" asp-action="Delete" asp-route-id="@sklad.Id">Smazat</a>
+                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-warning">Upravit</a>
+                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-sm btn-danger">Smazat</a>
                 </td>
             </tr>
         }

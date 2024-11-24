@@ -1,8 +1,7 @@
 ﻿using Inventarni_system.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Inventarni_system.Controllers
 {
@@ -15,53 +14,64 @@ namespace Inventarni_system.Controllers
             _context = context;
         }
 
-        //GET: Sklad
-        public async Task<IActionResult> Index()
+        // GET: Sklad
+        [HttpGet]
+        public async Task<IActionResult> Index(string searchString)
         {
-            var sklady = await _context.Sklady.Include(s => s.Budova).ToListAsync();
-            return View(sklady);
+            ViewData["CurrentFilter"] = searchString;
+
+            IQueryable<Sklad> sklady = _context.Sklady.Include(s => s.Budova);
+
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                searchString = searchString.ToLower();
+                sklady = sklady.Where(s => s.Nazev.ToLower().Contains(searchString) || s.Budova.Nazev.ToLower().Contains(searchString));
+            }
+
+            return View(await sklady.ToListAsync());
         }
 
-        //GET: Sklad/Create
+
+        // GET: Sklad/Create
         public IActionResult Create()
         {
-            ViewBag.Budovy = _context.Budovy.ToList();
+            ViewData["BudovaId"] = new SelectList(_context.Budovy, "Id", "Nazev");
             return View();
         }
 
-        //POST: Sklad/Create 
+        // POST: Sklad/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Sklad sklad)
         {
             if (ModelState.IsValid)
             {
-                _context.Sklady.Add(sklad);
+                _context.Add(sklad);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewBag.Budovy = _context.Budovy.ToList();
+            ViewData["BudovaId"] = new SelectList(_context.Budovy, "Id", "Nazev", sklad.BudovaId);
             return View(sklad);
         }
 
-        //GET: Sklad/Edit
+        // GET: Sklad/Edit/5
         public async Task<IActionResult> Edit(int id)
         {
             var sklad = await _context.Sklady.FindAsync(id);
-            if(sklad == null)
+            if (sklad == null)
             {
                 return NotFound();
             }
-            ViewBag.Budovy = _context.Budovy.ToList();
+            ViewData["BudovaId"] = new SelectList(_context.Budovy, "Id", "Nazev", sklad.BudovaId);
             return View(sklad);
         }
 
-        //POST: Sklad/Edit
+        // POST: Sklad/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, Sklad sklad)
         {
-            if(id != sklad.Id)
+            if (id != sklad.Id)
             {
                 return NotFound();
             }
@@ -75,7 +85,7 @@ namespace Inventarni_system.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!SkladExists(sklad.Id))
+                    if (!_context.Sklady.Any(e => e.Id == sklad.Id))
                     {
                         return NotFound();
                     }
@@ -86,22 +96,25 @@ namespace Inventarni_system.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewBag.Budovy = _context.Budovy.ToList();
+            ViewData["BudovaId"] = new SelectList(_context.Budovy, "Id", "Nazev", sklad.BudovaId);
             return View(sklad);
         }
 
-        //GET: Sklad/Delete
+        // GET: Sklad/Delete/5
         public async Task<IActionResult> Delete(int id)
         {
-            var sklad = await _context.Sklady.FindAsync(id);
+            var sklad = await _context.Sklady
+                .Include(s => s.Budova)
+                .FirstOrDefaultAsync(m => m.Id == id);
             if (sklad == null)
             {
                 return NotFound();
             }
+
             return View(sklad);
         }
 
-        //POST: Sklad/Delete
+        // POST: Sklad/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
@@ -110,11 +123,6 @@ namespace Inventarni_system.Controllers
             _context.Sklady.Remove(sklad);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
-        }
-
-        private bool SkladExists(int id)
-        {
-            return _context.Sklady.Any(e => e.Id == id);
         }
     }
 }

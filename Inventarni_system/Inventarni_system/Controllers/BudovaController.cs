@@ -16,11 +16,21 @@ namespace Inventarni_system.Controllers
             _logger = logger;
         }
 
-        //GET: Budova
-        public async Task<IActionResult> Index()
+        // GET: Budova
+        public async Task<IActionResult> Index(string searchString)
         {
-            var budovy = await _context.Budovy.ToListAsync();
-            return View(budovy);
+            ViewData["CurrentFilter"] = searchString;
+
+            var budovy = from b in _context.Budovy
+                         select b;
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                searchString = searchString.ToLower();
+                budovy = budovy.Where(b => b.Nazev.ToLower().Contains(searchString) || b.Typ.ToLower().Contains(searchString));
+            }
+
+            return View(await budovy.ToListAsync());
         }
 
         // GET: Budova/Create
@@ -113,8 +123,11 @@ namespace Inventarni_system.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var budova = await _context.Budovy.FindAsync(id);
-            _context.Budovy.Remove(budova);
-            await _context.SaveChangesAsync();
+            if (budova != null)
+            {
+                _context.Budovy.Remove(budova);
+                await _context.SaveChangesAsync();
+            }
             return RedirectToAction(nameof(Index));
         }
 

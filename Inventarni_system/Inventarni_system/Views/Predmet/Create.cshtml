@@ -2,22 +2,65 @@
 
 <h2>Přidat nový předmět</h2>
 
-<form asp-action="Create">
+<form id="addPredmetForm">
+    @Html.AntiForgeryToken()
+
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
     <div>
-        <label>Název:</label>
-        <input asp-for="Nazev" required />
+        <label asp-for="Nazev">Název:</label>
+        <input id="Nazev" name="Nazev" required />
+        @Html.ValidationMessageFor(m => m.Nazev, "", new { @class = "text-danger" })
     </div>
     <div>
-        <label>Sklad:</label>
-        <select asp-for="SkladId" asp-items="@(new SelectList(ViewBag.Sklady, "Id", "Nazev"))" required></select>
+        <label asp-for="SkladId">Sklad:</label>
+        <select id="SkladId" name="SkladId" required asp-items="ViewBag.SkladId"></select>
+        @Html.ValidationMessageFor(m => m.SkladId, "", new { @class = "text-danger" })
     </div>
     <div>
-        <label>Množství:</label>
-        <input asp-for="Mnozstvi" type="number" required />
+        <label asp-for="Mnozstvi">Množství:</label>
+        <input id="Mnozstvi" name="Mnozstvi" required />
+        @Html.ValidationMessageFor(m => m.Mnozstvi, "", new { @class = "text-danger" })
     </div>
     <div>
-        <label>Cena za kus:</label>
-        <input asp-for="CenaZaKus" type="number" step="0.01" required />
+        <label asp-for="CenaZaKus">Cena za kus:</label>
+        <input id="CenaZaKus" name="CenaZaKus" required />
+        @Html.ValidationMessageFor(m => m.CenaZaKus, "", new { @class = "text-danger" })
     </div>
-    <button type="submit">Přidat</button>
+    <button type="button" onclick="submitForm()">Přidat</button>
 </form>
+
+<script>
+    function submitForm() {
+        var nazev = document.getElementById("Nazev").value;
+        var skladId = document.getElementById("SkladId").value;
+        var mnozstvi = document.getElementById("Mnozstvi").value;
+        var cenaZaKus = document.getElementById("CenaZaKus").value;
+
+        fetch('/Predmet/Create', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'X-Requested-With': 'XMLHttpRequest'
+            },
+            body: new URLSearchParams({
+                '__RequestVerificationToken': document.querySelector('input[name="__RequestVerificationToken"]').value,
+                'Nazev': nazev,
+                'SkladId': skladId,
+                'Mnozstvi': mnozstvi,
+                'CenaZaKus': cenaZaKus
+            })
+        })
+            .then(response => {
+                if (response.ok) {
+                    window.location.href = '/Predmet';
+                } else {
+                    alert('Došlo k chybě při odesílání formuláře.');
+                }
+            })
+            .catch(error => {
+                console.error('Chyba:', error);
+                alert('Nastala chyba při odesílání formuláře.');
+            });
+    }
+</script>

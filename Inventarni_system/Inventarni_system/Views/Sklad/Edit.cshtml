@@ -2,15 +2,17 @@
 
 <h2>Upravit sklad</h2>
 
-<form asp-action="Edit">
+<form asp-action="Edit" method="post">
+    @Html.AntiForgeryToken()
     <input type="hidden" asp-for="Id" />
     <div>
-        <label>Název:</label>
+        <label asp-for="Nazev">Název:</label>
         <input asp-for="Nazev" required />
     </div>
     <div>
-        <label>Budova:</label>
-        <select asp-for="BudovaId" asp-items="@(new SelectList(ViewBag.Budovy, "Id", "Nazev", Model.BudovaId))" required></select>
+        <label asp-for="BudovaId">Budova:</label>
+        <select asp-for="BudovaId" class="form-control" asp-items="ViewBag.BudovaId"></select>
+        @Html.ValidationMessageFor(m => m.BudovaId, "", new { @class = "text-danger" })
     </div>
-    <button type="submit">Uložit změny</button>
+    <button type="submit" class="btn btn-primary mt-2">Uložit změny</button>
 </form>

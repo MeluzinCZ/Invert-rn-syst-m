@@ -1,35 +1,43 @@
 ﻿using Inventarni_system.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Inventarni_system.Controllers
 {
     public class PredmetController : Controller
     {
         private readonly AppDbContext _context;
+        private readonly ILogger<PredmetController> _logger;
 
-        public PredmetController(AppDbContext context)
+        public PredmetController(AppDbContext context, ILogger<PredmetController> logger)
         {
             _context = context;
+            _logger = logger;
         }
 
-        //GET: Predmet
-        public async Task<IActionResult> Index()
+        // GET: Predmet
+        public async Task<IActionResult> Index(string searchString)
         {
-            var predmety = await _context.Predmety.Include(p => p.Sklad).ToListAsync();
-            return View(predmety);
+            ViewData["CurrentFilter"] = searchString;
+
+            IQueryable<Predmet> predmety = _context.Predmety.Include(p => p.Sklad);
+
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                searchString = searchString.ToLower();
+                predmety = predmety.Where(p => p.Nazev.ToLower().Contains(searchString) || p.SkladId.ToString().Contains(searchString) || p.Sklad.Nazev.ToLower().Contains(searchString));
+            }
+
+            return View(await predmety.ToListAsync());
         }
 
-        //GET: Predmet/Create
+        // GET: Predmet/Create
         public IActionResult Create()
         {
-            ViewBag.Sklady = _context.Sklady.ToList();
-            return View();
+            return View(new Predmet());
         }
 
-        //POST: Predmet/Create
+        // POST: Predmet/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Predmet predmet)
@@ -40,26 +48,24 @@ namespace Inventarni_system.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewBag.Sklady = _context.Sklady.ToList();
             return View(predmet);
         }
 
-        //GET: Predmet/Edit
+        // GET: Predmet/Edit
         public async Task<IActionResult> Edit(int id)
         {
             var predmet = await _context.Predmety.FindAsync(id);
-            if(predmet == null)
+            if (predmet == null)
             {
                 return NotFound();
             }
-            ViewBag.Sklady = _context.Sklady.ToList();
             return View(predmet);
         }
 
-        //POST: Predmet/Edit
+        // POST: Predmet/Edit
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edsit(int id, Predmet predmet)
+        public async Task<IActionResult> Edit(int id, Predmet predmet)
         {
             if (id != predmet.Id)
             {
@@ -86,22 +92,21 @@ namespace Inventarni_system.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewBag.Sklady = _context.Sklady.ToList();
             return View(predmet);
         }
 
-        //GET: Predmet/Delete
+        // GET: Predmet/Delete
         public async Task<IActionResult> Delete(int id)
         {
-            var predmet = await _context.Predmety.Include(p => p.Sklad).FirstOrDefaultAsync(m => m.Id == id);
-            if(predmet == null)
+            var predmet = await _context.Predmety.FindAsync(id);
+            if (predmet == null)
             {
                 return NotFound();
             }
             return View(predmet);
         }
 
-        //POST: Predmet/Delete
+        // POST: Predmet/Delete
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
@@ -117,5 +122,4 @@ namespace Inventarni_system.Controllers
             return _context.Predmety.Any(e => e.Id == id);
         }
     }
-
 }

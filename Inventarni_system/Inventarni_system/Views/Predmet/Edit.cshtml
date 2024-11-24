@@ -3,22 +3,28 @@
 <h2>Upravit předmět</h2>
 
 <form asp-action="Edit">
+    @Html.AntiForgeryToken()
+
     <input type="hidden" asp-for="Id" />
     <div>
-        <label>Název:</label>
+        <label asp-for="Nazev">Název:</label>
         <input asp-for="Nazev" required />
+        @Html.ValidationMessageFor(m => m.Nazev, "", new { @class = "text-danger" })
     </div>
     <div>
-        <label>Sklad:</label>
-        <select asp-for="SkladId" asp-items="@(new SelectList(ViewBag.Sklady, "Id", "Nazev", Model.SkladId))" required></select>
+        <label asp-for="SkladId">ID skladu:</label>
+        <input asp-for="SkladId" required />
+        @Html.ValidationMessageFor(m => m.SkladId, "", new { @class = "text-danger" })
     </div>
     <div>
-        <label>Množství:</label>
-        <input asp-for="Mnozstvi" type="number" required />
+        <label asp-for="Mnozstvi">Množství:</label>
+        <input asp-for="Mnozstvi" required type="number" />
+        @Html.ValidationMessageFor(m => m.Mnozstvi, "", new { @class = "text-danger" })
     </div>
     <div>
-        <label>Cena za kus:</label>
-        <input asp-for="CenaZaKus" type="number" step="0.01" required />
+        <label asp-for="CenaZaKus">Cena za kus:</label>
+        <input asp-for="CenaZaKus" required type="number" step="0.01" />
+        @Html.ValidationMessageFor(m => m.CenaZaKus, "", new { @class = "text-danger" })
     </div>
     <button type="submit">Uložit změny</button>
 </form>

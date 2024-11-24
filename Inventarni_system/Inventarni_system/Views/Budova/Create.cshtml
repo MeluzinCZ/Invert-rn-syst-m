@@ -22,26 +22,26 @@
 
 <script>
     function submitForm() {
-        // Získání hodnot z inputů
+        
         var nazev = document.getElementById("Nazev").value;
         var typ = document.getElementById("Typ").value;
 
-        // Odeslání dat na server pomocí fetch API
+        
         fetch('/Budova/Create', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded',
-                'X-Requested-With': 'XMLHttpRequest' // Tímto zajistíte, že je požadavek identifikován jako AJAX
+                'X-Requested-With': 'XMLHttpRequest' 
             },
             body: new URLSearchParams({
-                '__RequestVerificationToken': document.querySelector('input[name="__RequestVerificationToken"]').value, // CSRF token
+                '__RequestVerificationToken': document.querySelector('input[name="__RequestVerificationToken"]').value, 
                 'Nazev': nazev,
                 'Typ': typ
             })
         })
             .then(response => {
                 if (response.ok) {
-                    window.location.href = '/Budova'; // Přesměrování na index po úspěšném přidání
+                    window.location.href = '/Budova'; 
                 } else {
                     alert('Došlo k chybě při odesílání formuláře.');
                 }
