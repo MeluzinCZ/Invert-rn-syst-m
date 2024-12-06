@@ -1,12 +1,34 @@
 ﻿@model Inventarni_system.Models.Sklad
 
-<h2>Potvrzení smazání</h2>
+@{
+    ViewData["Title"] = "Smazat Sklad";
+}
 
-<p>Opravdu chcete smazat sklad <strong>@Model.Nazev</strong>?</p>
+<h1>@ViewData["Title"]</h1>
 
-<form asp-action="Delete" method="post">
-    @Html.AntiForgeryToken()
-    <input type="hidden" asp-for="Id" />
-    <button type="submit" class="btn btn-danger">Ano, smažte</button>
-    <a asp-action="Index" class="btn btn-secondary">Zrušit</a>
-</form>
+<h3>Opravdu chcete smazat tento sklad?</h3>
+<div>
+    <h4>Sklad</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Nazev)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Nazev)
+        </dd>
+        <dt class="col-sm-2">
+            Budova
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Budova.Nazev)
+        </dd>
+    </dl>
+
+    <form asp-action="Delete" method="post">
+        @Html.AntiForgeryToken()
+        <input type="hidden" asp-for="Id" />
+        <button type="submit" class="btn btn-danger">Smazat</button>
+        <a asp-action="Index" class="btn btn-secondary">Zpět</a>
+    </form>
+</div>

@@ -1,12 +1,47 @@
 ﻿@model Inventarni_system.Models.Predmet
 
-<h2>Potvrzení smazání</h2>
+@{
+    ViewData["Title"] = "Smazat Předmět";
+}
 
-<p>Opravdu chcete smazat předmět <strong>@Model.Nazev</strong>?</p>
+<h1>@ViewData["Title"]</h1>
 
-<form asp-action="Delete" method="post">
-    @Html.AntiForgeryToken()
-    <input type="hidden" asp-for="Id" />
-    <button type="submit">Ano, smažte</button>
-    <a asp-action="Index">Zrušit</a>
-</form>
+<h3>Opravdu chcete smazat tento předmět?</h3>
+<div>
+    <h4>Předmět</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Nazev)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Nazev)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Mnozstvi)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Mnozstvi)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.CenaZaKus)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.CenaZaKus)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayName("Sklad")
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Sklad.Nazev)
+        </dd>
+    </dl>
+
+    <form asp-action="Delete" method="post">
+        @Html.AntiForgeryToken()
+        <input type="hidden" asp-for="Id" />
+        <br />
+        <button type="submit" class="btn btn-danger">Smazat</button>
+        <a asp-action="Index" class="btn btn-secondary">Zpět</a>
+    </form>
+</div>

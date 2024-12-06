@@ -1,10 +1,12 @@
 {
   "version": 2,
-  "dgSpecHash": "qn7hrXdsnxs=",
+  "dgSpecHash": "8iHQ6M/PNMs=",
   "success": true,
   "projectFilePath": "C:\\Users\\beda3\\Desktop\\SKOLA\\VEJSKA FEI\\TRETAK\\BCSH2\\Semestralni_prace\\Inventarni_system\\Inventarni_system\\Inventarni_system.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\beda3\\.nuget\\packages\\humanizer.core\\2.14.1\\humanizer.core.2.14.1.nupkg.sha512",
+    "C:\\Users\\beda3\\.nuget\\packages\\jquery\\1.8.0\\jquery.1.8.0.nupkg.sha512",
+    "C:\\Users\\beda3\\.nuget\\packages\\jquery.validation\\1.21.0\\jquery.validation.1.21.0.nupkg.sha512",
     "C:\\Users\\beda3\\.nuget\\packages\\microsoft.bcl.asyncinterfaces\\6.0.0\\microsoft.bcl.asyncinterfaces.6.0.0.nupkg.sha512",
     "C:\\Users\\beda3\\.nuget\\packages\\microsoft.codeanalysis.analyzers\\3.3.3\\microsoft.codeanalysis.analyzers.3.3.3.nupkg.sha512",
     "C:\\Users\\beda3\\.nuget\\packages\\microsoft.codeanalysis.common\\4.5.0\\microsoft.codeanalysis.common.4.5.0.nupkg.sha512",
@@ -30,6 +32,7 @@
     "C:\\Users\\beda3\\.nuget\\packages\\microsoft.extensions.logging.abstractions\\8.0.2\\microsoft.extensions.logging.abstractions.8.0.2.nupkg.sha512",
     "C:\\Users\\beda3\\.nuget\\packages\\microsoft.extensions.options\\8.0.2\\microsoft.extensions.options.8.0.2.nupkg.sha512",
     "C:\\Users\\beda3\\.nuget\\packages\\microsoft.extensions.primitives\\8.0.0\\microsoft.extensions.primitives.8.0.0.nupkg.sha512",
+    "C:\\Users\\beda3\\.nuget\\packages\\microsoft.jquery.unobtrusive.validation\\4.0.0\\microsoft.jquery.unobtrusive.validation.4.0.0.nupkg.sha512",
     "C:\\Users\\beda3\\.nuget\\packages\\mono.texttemplating\\2.2.1\\mono.texttemplating.2.2.1.nupkg.sha512",
     "C:\\Users\\beda3\\.nuget\\packages\\sqlitepclraw.bundle_e_sqlite3\\2.1.6\\sqlitepclraw.bundle_e_sqlite3.2.1.6.nupkg.sha512",
     "C:\\Users\\beda3\\.nuget\\packages\\sqlitepclraw.core\\2.1.6\\sqlitepclraw.core.2.1.6.nupkg.sha512",

@@ -1,18 +1,42 @@
 ﻿@model Inventarni_system.Models.Sklad
 
-<h2>Upravit sklad</h2>
+@{
+    ViewData["Title"] = "Upravit Sklad";
+}
 
-<form asp-action="Edit" method="post">
-    @Html.AntiForgeryToken()
-    <input type="hidden" asp-for="Id" />
-    <div>
-        <label asp-for="Nazev">Název:</label>
-        <input asp-for="Nazev" required />
+<h1>@ViewData["Title"]</h1>
+
+<h4>Sklad</h4>
+<hr />
+<div class="row">
+    <div class="col-md-6">
+        <form asp-action="Edit" method="post">
+            @Html.AntiForgeryToken()
+            <input type="hidden" asp-for="Id" />
+            <div asp-validation-summary="All" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Nazev" class="control-label"></label>
+                <input asp-for="Nazev" class="form-control" />
+                <span asp-validation-for="Nazev" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="BudovaId" class="control-label"></label>
+                <select asp-for="BudovaId" class="form-control" asp-items="ViewBag.BudovaId">
+                    <option value="">-- Vyberte budovu --</option>
+                </select>
+                <span asp-validation-for="BudovaId" class="text-danger"></span>
+            </div>
+            <br />
+            <div class="form-group">
+                <input type="submit" value="Uložit" class="btn btn-primary" />
+                <a asp-action="Index" class="btn btn-secondary">Zpět</a>
+            </div>
+        </form>
     </div>
-    <div>
-        <label asp-for="BudovaId">Budova:</label>
-        <select asp-for="BudovaId" class="form-control" asp-items="ViewBag.BudovaId"></select>
-        @Html.ValidationMessageFor(m => m.BudovaId, "", new { @class = "text-danger" })
-    </div>
-    <button type="submit" class="btn btn-primary mt-2">Uložit změny</button>
-</form>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

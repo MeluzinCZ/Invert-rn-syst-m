@@ -1,36 +1,54 @@
-﻿using Inventarni_system.Models;
+﻿using System;
+using System.Linq;
+using System.Threading.Tasks;
+using Inventarni_system.Data;
+using Inventarni_system.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 namespace Inventarni_system.Controllers
 {
     public class SkladController : Controller
     {
         private readonly AppDbContext _context;
+        private readonly ILogger<SkladController> _logger;
 
-        public SkladController(AppDbContext context)
+        public SkladController(AppDbContext context, ILogger<SkladController> logger)
         {
             _context = context;
+            _logger = logger;
         }
 
         // GET: Sklad
-        [HttpGet]
         public async Task<IActionResult> Index(string searchString)
         {
             ViewData["CurrentFilter"] = searchString;
 
-            IQueryable<Sklad> sklady = _context.Sklady.Include(s => s.Budova);
+            var sklady = from s in _context.Sklady.Include(s => s.Budova)
+                         select s;
 
             if (!string.IsNullOrEmpty(searchString))
             {
-                searchString = searchString.ToLower();
-                sklady = sklady.Where(s => s.Nazev.ToLower().Contains(searchString) || s.Budova.Nazev.ToLower().Contains(searchString));
+                string loweredSearch = searchString.ToLower();
+
+                sklady = sklady.Where(s =>
+                    s.Nazev.ToLower().Contains(loweredSearch) ||
+                    (s.Budova != null && s.Budova.Nazev != null && s.Budova.Nazev.ToLower().Contains(loweredSearch)));
             }
 
-            return View(await sklady.ToListAsync());
+            try
+            {
+                var result = await sklady.ToListAsync();
+                return View(result);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Chyba při načítání seznamu skladů.");
+                return View("Error");
+            }
         }
-
 
         // GET: Sklad/Create
         public IActionResult Create()
@@ -42,24 +60,50 @@ namespace Inventarni_system.Controllers
         // POST: Sklad/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(Sklad sklad)
+        public async Task<IActionResult> Create([Bind("Nazev,BudovaId")] Sklad sklad)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(sklad);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                try
+                {
+                    _context.Add(sklad);
+                    await _context.SaveChangesAsync();
+                    _logger.LogInformation("Nový sklad byl vytvořen: {Nazev}", sklad.Nazev);
+                    return RedirectToAction(nameof(Index));
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError(ex, "Chyba při vytváření nového skladu.");
+                    ModelState.AddModelError(string.Empty, "Došlo k chybě při vytváření skladu. Zkuste to prosím znovu.");
+                }
             }
+
             ViewData["BudovaId"] = new SelectList(_context.Budovy, "Id", "Nazev", sklad.BudovaId);
+            // Logování chyb z ModelState
+            foreach (var modelState in ModelState.Values)
+            {
+                foreach (var error in modelState.Errors)
+                {
+                    _logger.LogError("ModelState error: {ErrorMessage}", error.ErrorMessage);
+                }
+            }
+
             return View(sklad);
         }
 
         // GET: Sklad/Edit/5
-        public async Task<IActionResult> Edit(int id)
+        public async Task<IActionResult> Edit(int? id)
         {
+            if (id == null)
+            {
+                _logger.LogWarning("Edit akce byla zavolána bez ID.");
+                return NotFound();
+            }
+
             var sklad = await _context.Sklady.FindAsync(id);
             if (sklad == null)
             {
+                _logger.LogWarning("Nebyla nalezena sklad s ID {Id}.", id);
                 return NotFound();
             }
             ViewData["BudovaId"] = new SelectList(_context.Budovy, "Id", "Nazev", sklad.BudovaId);
@@ -69,10 +113,11 @@ namespace Inventarni_system.Controllers
         // POST: Sklad/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, Sklad sklad)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Nazev,BudovaId")] Sklad sklad)
         {
             if (id != sklad.Id)
             {
+                _logger.LogWarning("Edit akce: ID v URL ({UrlId}) se neshoduje s ID v modelu ({ModelId}).", id, sklad.Id);
                 return NotFound();
             }
 
@@ -82,32 +127,57 @@ namespace Inventarni_system.Controllers
                 {
                     _context.Update(sklad);
                     await _context.SaveChangesAsync();
+                    _logger.LogInformation("Sklad s ID {Id} byl aktualizován.", sklad.Id);
+                    return RedirectToAction(nameof(Index));
                 }
-                catch (DbUpdateConcurrencyException)
+                catch (DbUpdateConcurrencyException ex)
                 {
-                    if (!_context.Sklady.Any(e => e.Id == sklad.Id))
+                    if (!SkladExists(sklad.Id))
                     {
+                        _logger.LogWarning("Nebyla nalezena sklad s ID {Id} během aktualizace.", sklad.Id);
                         return NotFound();
                     }
                     else
                     {
+                        _logger.LogError(ex, "Chyba při aktualizaci skladu s ID {Id}.", sklad.Id);
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                catch (Exception ex)
+                {
+                    _logger.LogError(ex, "Chyba při aktualizaci skladu s ID {Id}.", sklad.Id);
+                    ModelState.AddModelError(string.Empty, "Došlo k chybě při aktualizaci skladu. Zkuste to prosím znovu.");
+                }
             }
+
             ViewData["BudovaId"] = new SelectList(_context.Budovy, "Id", "Nazev", sklad.BudovaId);
+            // Logování chyb z ModelState
+            foreach (var modelState in ModelState.Values)
+            {
+                foreach (var error in modelState.Errors)
+                {
+                    _logger.LogError("ModelState error: {ErrorMessage}", error.ErrorMessage);
+                }
+            }
+
             return View(sklad);
         }
 
         // GET: Sklad/Delete/5
-        public async Task<IActionResult> Delete(int id)
+        public async Task<IActionResult> Delete(int? id)
         {
+            if (id == null)
+            {
+                _logger.LogWarning("Delete akce byla zavolána bez ID.");
+                return NotFound();
+            }
+
             var sklad = await _context.Sklady
                 .Include(s => s.Budova)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (sklad == null)
             {
+                _logger.LogWarning("Nebyla nalezena sklad s ID {Id} při načítání pro smazání.", id);
                 return NotFound();
             }
 
@@ -120,9 +190,31 @@ namespace Inventarni_system.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var sklad = await _context.Sklady.FindAsync(id);
-            _context.Sklady.Remove(sklad);
-            await _context.SaveChangesAsync();
+            if (sklad != null)
+            {
+                try
+                {
+                    _context.Sklady.Remove(sklad);
+                    await _context.SaveChangesAsync();
+                    _logger.LogInformation("Sklad s ID {Id} byl smazán.", id);
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError(ex, "Chyba při mazání skladu s ID {Id}.", id);
+                    ModelState.AddModelError(string.Empty, "Došlo k chybě při mazání skladu. Zkuste to prosím znovu.");
+                    return View(sklad);
+                }
+            }
+            else
+            {
+                _logger.LogWarning("Sklad s ID {Id} nebyl nalezen při pokusu o smazání.", id);
+            }
             return RedirectToAction(nameof(Index));
+        }
+
+        private bool SkladExists(int id)
+        {
+            return _context.Sklady.Any(e => e.Id == id);
         }
     }
 }

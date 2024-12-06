@@ -1,21 +1,25 @@
-using Inventarni_system.Models;
+﻿using Inventarni_system.Data;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseSqlite("Data Source=autoservis.db"));
-
+// Přidání služeb do kontejneru.
 builder.Services.AddControllersWithViews();
+
+// Konfigurace DbContext s SQLite
+builder.Services.AddDbContext<AppDbContext>(options =>
+    options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
-if (!app.Environment.IsDevelopment())
+// Konfigurace HTTP request pipeline.
+if (app.Environment.IsDevelopment())
+{
+    app.UseDeveloperExceptionPage(); // Zobrazí detailní chyby v development režimu
+}
+else
 {
     app.UseExceptionHandler("/Home/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
 
@@ -26,6 +30,7 @@ app.UseRouting();
 
 app.UseAuthorization();
 
+// Definice default routy
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");

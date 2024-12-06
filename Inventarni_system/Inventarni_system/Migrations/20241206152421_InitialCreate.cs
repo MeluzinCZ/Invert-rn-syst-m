@@ -51,9 +51,9 @@ namespace Inventarni_system.Migrations
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     Nazev = table.Column<string>(type: "TEXT", nullable: false),
-                    SkladId = table.Column<int>(type: "INTEGER", nullable: false),
                     Mnozstvi = table.Column<int>(type: "INTEGER", nullable: false),
-                    CenaZaKus = table.Column<decimal>(type: "TEXT", nullable: false)
+                    CenaZaKus = table.Column<decimal>(type: "TEXT", nullable: false),
+                    SkladId = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {

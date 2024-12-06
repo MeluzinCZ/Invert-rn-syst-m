@@ -2,6 +2,7 @@
 using Inventarni_system.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -9,9 +10,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Inventarni_system.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241206154220_UpdateSkladModel")]
+    partial class UpdateSkladModel
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "8.0.10");
@@ -95,17 +98,12 @@ namespace Inventarni_system.Migrations
             modelBuilder.Entity("Inventarni_system.Models.Sklad", b =>
                 {
                     b.HasOne("Inventarni_system.Models.Budova", "Budova")
-                        .WithMany("Sklady")
+                        .WithMany()
                         .HasForeignKey("BudovaId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Budova");
-                });
-
-            modelBuilder.Entity("Inventarni_system.Models.Budova", b =>
-                {
-                    b.Navigation("Sklady");
                 });
 #pragma warning restore 612, 618
         }

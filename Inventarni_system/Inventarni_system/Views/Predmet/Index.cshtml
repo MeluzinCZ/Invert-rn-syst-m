@@ -1,44 +1,66 @@
 ﻿@model IEnumerable<Inventarni_system.Models.Predmet>
 
 @{
-    ViewData["Title"] = "Předměty";
+    ViewData["Title"] = "Seznam Předmětů";
 }
 
-<h2>Předměty</h2>
+<h1>@ViewData["Title"]</h1>
 
-<div class="mb-3">
-    <a asp-action="Create" class="btn btn-success">Přidat nový předmět</a>
-</div>
+<p>
+    <a asp-action="Create" class="btn btn-primary">Vytvořit Nový Předmět</a>
+</p>
 
-<form method="get" asp-controller="Predmet" asp-action="Index">
-    <div class="form-group">
-        <input type="text" name="searchString" value="@ViewData["CurrentFilter"]" class="form-control" placeholder="Hledat předmět...">
-        <button type="submit" class="btn btn-primary mt-2">Vyhledat</button>
+<form asp-action="Index" method="get" class="form-inline mb-3">
+    <div class="form-group mr-2">
+        <input type="text" name="searchString" value="@ViewData["CurrentFilter"]" class="form-control" placeholder="Hledat název nebo sklad..." />
     </div>
+    <br />
+    <button type="submit" class="btn btn-primary">Hledat</button>
+    <a asp-action="Index" class="btn btn-secondary ml-2">Reset</a>
 </form>
 
-<table class="table">
+<table class="table table-striped">
     <thead>
         <tr>
-            <th>Id</th>
-            <th>Název</th>
-            <th>Množství</th>
-            <th>Cena za kus</th>
-            <th>Akce</th>
+            @if (Model.Any())
+            {
+                <th>@Html.DisplayNameFor(model => model.First().Nazev)</th>
+                <th>@Html.DisplayNameFor(model => model.First().Mnozstvi)</th>
+                <th>@Html.DisplayNameFor(model => model.First().CenaZaKus)</th>
+                <th>@Html.DisplayName("Sklad")</th>
+                <th></th>
+            }
+            else
+            {
+                <th>Název</th>
+                <th>Množství</th>
+                <th>Cena za kus</th>
+                <th>Sklad</th>
+                <th></th>
+            }
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model)
+        @if (Model.Any())
+        {
+            foreach (var predmet in Model)
+            {
+                <tr>
+                    <td>@Html.DisplayFor(modelItem => predmet.Nazev)</td>
+                    <td>@Html.DisplayFor(modelItem => predmet.Mnozstvi)</td>
+                    <td>@Html.DisplayFor(modelItem => predmet.CenaZaKus)</td>
+                    <td>@(predmet.Sklad != null ? Html.DisplayFor(modelItem => predmet.Sklad.Nazev) : "Nenalezena")</td>
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@predmet.Id" class="btn btn-warning btn-sm">Upravit</a>
+                        <a asp-action="Delete" asp-route-id="@predmet.Id" class="btn btn-danger btn-sm">Smazat</a>
+                    </td>
+                </tr>
+            }
+        }
+        else
         {
             <tr>
-                <td>@item.Id</td>
-                <td>@item.Nazev</td>
-                <td>@item.Mnozstvi</td>
-                <td>@item.CenaZaKus</td>
-                <td>
-                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-warning">Upravit</a>
-                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-sm btn-danger">Smazat</a>
-                </td>
+                <td colspan="5" class="text-center">Žádné předměty nenalezeny.</td>
             </tr>
         }
     </tbody>

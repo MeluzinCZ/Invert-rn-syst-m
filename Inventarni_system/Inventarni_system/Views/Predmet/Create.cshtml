@@ -1,66 +1,51 @@
 ﻿@model Inventarni_system.Models.Predmet
 
-<h2>Přidat nový předmět</h2>
+@{
+    ViewData["Title"] = "Vytvořit Nový Předmět";
+}
 
-<form id="addPredmetForm">
-    @Html.AntiForgeryToken()
+<h1>@ViewData["Title"]</h1>
 
-    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-
-    <div>
-        <label asp-for="Nazev">Název:</label>
-        <input id="Nazev" name="Nazev" required />
-        @Html.ValidationMessageFor(m => m.Nazev, "", new { @class = "text-danger" })
+<h4>Předmět</h4>
+<hr />
+<div class="row">
+    <div class="col-md-6">
+        <form asp-action="Create" method="post">
+            @Html.AntiForgeryToken()
+            <div asp-validation-summary="All" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Nazev" class="control-label"></label>
+                <input asp-for="Nazev" class="form-control" />
+                <span asp-validation-for="Nazev" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Mnozstvi" class="control-label"></label>
+                <input asp-for="Mnozstvi" class="form-control" />
+                <span asp-validation-for="Mnozstvi" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CenaZaKus" class="control-label"></label>
+                <input asp-for="CenaZaKus" class="form-control" />
+                <span asp-validation-for="CenaZaKus" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SkladId" class="control-label"></label>
+                <select asp-for="SkladId" class="form-control" asp-items="ViewBag.SkladId">
+                    <option value="">-- Vyberte sklad --</option>
+                </select>
+                <span asp-validation-for="SkladId" class="text-danger"></span>
+            </div>
+            <br />
+            <div class="form-group">
+                <input type="submit" value="Vytvořit" class="btn btn-primary" />
+                <a asp-action="Index" class="btn btn-secondary">Zpět</a>
+            </div>
+        </form>
     </div>
-    <div>
-        <label asp-for="SkladId">Sklad:</label>
-        <select id="SkladId" name="SkladId" required asp-items="ViewBag.SkladId"></select>
-        @Html.ValidationMessageFor(m => m.SkladId, "", new { @class = "text-danger" })
-    </div>
-    <div>
-        <label asp-for="Mnozstvi">Množství:</label>
-        <input id="Mnozstvi" name="Mnozstvi" required />
-        @Html.ValidationMessageFor(m => m.Mnozstvi, "", new { @class = "text-danger" })
-    </div>
-    <div>
-        <label asp-for="CenaZaKus">Cena za kus:</label>
-        <input id="CenaZaKus" name="CenaZaKus" required />
-        @Html.ValidationMessageFor(m => m.CenaZaKus, "", new { @class = "text-danger" })
-    </div>
-    <button type="button" onclick="submitForm()">Přidat</button>
-</form>
+</div>
 
-<script>
-    function submitForm() {
-        var nazev = document.getElementById("Nazev").value;
-        var skladId = document.getElementById("SkladId").value;
-        var mnozstvi = document.getElementById("Mnozstvi").value;
-        var cenaZaKus = document.getElementById("CenaZaKus").value;
-
-        fetch('/Predmet/Create', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded',
-                'X-Requested-With': 'XMLHttpRequest'
-            },
-            body: new URLSearchParams({
-                '__RequestVerificationToken': document.querySelector('input[name="__RequestVerificationToken"]').value,
-                'Nazev': nazev,
-                'SkladId': skladId,
-                'Mnozstvi': mnozstvi,
-                'CenaZaKus': cenaZaKus
-            })
-        })
-            .then(response => {
-                if (response.ok) {
-                    window.location.href = '/Predmet';
-                } else {
-                    alert('Došlo k chybě při odesílání formuláře.');
-                }
-            })
-            .catch(error => {
-                console.error('Chyba:', error);
-                alert('Nastala chyba při odesílání formuláře.');
-            });
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
-</script>
+}

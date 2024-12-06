@@ -2,6 +2,7 @@
 using Inventarni_system.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -9,9 +10,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Inventarni_system.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241206153859_RemoveSkladyFromBudova")]
+    partial class RemoveSkladyFromBudova
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "8.0.10");
@@ -84,7 +87,7 @@ namespace Inventarni_system.Migrations
             modelBuilder.Entity("Inventarni_system.Models.Predmet", b =>
                 {
                     b.HasOne("Inventarni_system.Models.Sklad", "Sklad")
-                        .WithMany()
+                        .WithMany("Predmety")
                         .HasForeignKey("SkladId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -95,7 +98,7 @@ namespace Inventarni_system.Migrations
             modelBuilder.Entity("Inventarni_system.Models.Sklad", b =>
                 {
                     b.HasOne("Inventarni_system.Models.Budova", "Budova")
-                        .WithMany("Sklady")
+                        .WithMany()
                         .HasForeignKey("BudovaId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -103,9 +106,9 @@ namespace Inventarni_system.Migrations
                     b.Navigation("Budova");
                 });
 
-            modelBuilder.Entity("Inventarni_system.Models.Budova", b =>
+            modelBuilder.Entity("Inventarni_system.Models.Sklad", b =>
                 {
-                    b.Navigation("Sklady");
+                    b.Navigation("Predmety");
                 });
 #pragma warning restore 612, 618
         }

@@ -1,30 +1,52 @@
 ﻿@model Inventarni_system.Models.Predmet
 
-<h2>Upravit předmět</h2>
+@{
+    ViewData["Title"] = "Upravit Předmět";
+}
 
-<form asp-action="Edit">
-    @Html.AntiForgeryToken()
+<h1>@ViewData["Title"]</h1>
 
-    <input type="hidden" asp-for="Id" />
-    <div>
-        <label asp-for="Nazev">Název:</label>
-        <input asp-for="Nazev" required />
-        @Html.ValidationMessageFor(m => m.Nazev, "", new { @class = "text-danger" })
+<h4>Předmět</h4>
+<hr />
+<div class="row">
+    <div class="col-md-6">
+        <form asp-action="Edit" method="post">
+            @Html.AntiForgeryToken()
+            <input type="hidden" asp-for="Id" />
+            <div asp-validation-summary="All" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Nazev" class="control-label"></label>
+                <input asp-for="Nazev" class="form-control" />
+                <span asp-validation-for="Nazev" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Mnozstvi" class="control-label"></label>
+                <input asp-for="Mnozstvi" class="form-control" />
+                <span asp-validation-for="Mnozstvi" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CenaZaKus" class="control-label"></label>
+                <input asp-for="CenaZaKus" class="form-control" />
+                <span asp-validation-for="CenaZaKus" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SkladId" class="control-label"></label>
+                <select asp-for="SkladId" class="form-control" asp-items="ViewBag.SkladId">
+                    <option value="">-- Vyberte sklad --</option>
+                </select>
+                <span asp-validation-for="SkladId" class="text-danger"></span>
+            </div>
+            <br />
+            <div class="form-group">
+                <input type="submit" value="Upravit" class="btn btn-warning" />
+                <a asp-action="Index" class="btn btn-secondary">Zpět</a>
+            </div>
+        </form>
     </div>
-    <div>
-        <label asp-for="SkladId">ID skladu:</label>
-        <input asp-for="SkladId" required />
-        @Html.ValidationMessageFor(m => m.SkladId, "", new { @class = "text-danger" })
-    </div>
-    <div>
-        <label asp-for="Mnozstvi">Množství:</label>
-        <input asp-for="Mnozstvi" required type="number" />
-        @Html.ValidationMessageFor(m => m.Mnozstvi, "", new { @class = "text-danger" })
-    </div>
-    <div>
-        <label asp-for="CenaZaKus">Cena za kus:</label>
-        <input asp-for="CenaZaKus" required type="number" step="0.01" />
-        @Html.ValidationMessageFor(m => m.CenaZaKus, "", new { @class = "text-danger" })
-    </div>
-    <button type="submit">Uložit změny</button>
-</form>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
